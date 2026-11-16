@@ -9,6 +9,15 @@
 ![Lang](https://img.shields.io/badge/UI-EN%20%7C%20FR%20%7C%20ES%20%7C%20RU%20%7C%20PT--BR-purple)
 ![License](https://img.shields.io/badge/license-proprietary-red)
 
+<br>
+
+<img src="docs/preview.png" alt="DMZ APK Patcher preview" width="320" />
+
+<br><br>
+
+**▶ Watch the demo on YouTube**
+[![YouTube](https://img.shields.io/badge/YouTube-watch-FF0000?logo=youtube&logoColor=white)](YOUTUBE_URL_HERE)
+
 </div>
 
 ---
@@ -74,10 +83,10 @@ Two injection modes:
 # Requirements: JDK 17, Android SDK (compileSdk 34), gradle wrapper bundled
 
 # Keystore env vars (omit for a debug build):
-export ZLI_KEYSTORE=/path/to/release.jks
-export ZLI_KEYSTORE_PASS=...
-export ZLI_KEY_ALIAS=zli       # optional, default "zli"
-export ZLI_KEY_PASS=...        # optional, falls back to ZLI_KEYSTORE_PASS
+export DMZ_KEYSTORE=/path/to/release.jks
+export DMZ_KEYSTORE_PASS=...
+export DMZ_KEY_ALIAS=dmz       # optional, default "dmz"
+export DMZ_KEY_PASS=...        # optional, falls back to DMZ_KEYSTORE_PASS
 
 ./gradlew :app:assembleRelease
 ```

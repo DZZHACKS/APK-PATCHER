@@ -24,8 +24,8 @@ public final class KeystoreCreator {
         if (out == null) throw new BuildException("Keystore path required");
         if (password == null || password.length() < 6)
             throw new BuildException("Password must be at least 6 characters");
-        if (alias == null || alias.isEmpty()) alias = "zli";
-        if (commonName == null || commonName.isEmpty()) commonName = "ZLI APK Patcher";
+        if (alias == null || alias.isEmpty()) alias = "dmz";
+        if (commonName == null || commonName.isEmpty()) commonName = "DMZ APK Patcher";
         Files2.mkdirs(out.getParentFile());
 
         BouncyCastleProvider bc = new BouncyCastleProvider();

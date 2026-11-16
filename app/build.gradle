@@ -14,12 +14,12 @@ android {
 
     signingConfigs {
         release {
-            def ks = System.getenv('ZLI_KEYSTORE')
+            def ks = System.getenv('DMZ_KEYSTORE')
             if (ks) {
                 storeFile file(ks)
-                storePassword System.getenv('ZLI_KEYSTORE_PASS')
-                keyAlias System.getenv('ZLI_KEY_ALIAS') ?: 'zli'
-                keyPassword System.getenv('ZLI_KEY_PASS') ?: System.getenv('ZLI_KEYSTORE_PASS')
+                storePassword System.getenv('DMZ_KEYSTORE_PASS')
+                keyAlias System.getenv('DMZ_KEY_ALIAS') ?: 'dmz'
+                keyPassword System.getenv('DMZ_KEY_PASS') ?: System.getenv('DMZ_KEYSTORE_PASS')
             }
         }
     }
@@ -27,7 +27,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig System.getenv('ZLI_KEYSTORE') ? signingConfigs.release : signingConfigs.debug
+            signingConfig System.getenv('DMZ_KEYSTORE') ? signingConfigs.release : signingConfigs.debug
         }
     }
 

@@ -697,7 +697,7 @@ public class MainActivity extends AppCompatActivity {
                 : "mykey";
         fName.setText(baseName);
         fPass.setText(randomPassword(16));
-        fAlias.setText(detectedGame != null ? detectedGame.code.toLowerCase(Locale.ROOT) : "zli");
+        fAlias.setText(detectedGame != null ? detectedGame.code.toLowerCase(Locale.ROOT) : "dmz");
 
         body.findViewById(R.id.ksRegen).setOnClickListener(v -> fPass.setText(randomPassword(16)));
 
@@ -717,7 +717,7 @@ public class MainActivity extends AppCompatActivity {
                             && !name.toLowerCase(Locale.ROOT).endsWith(".jks")) name = name + ".p12";
                     File out = new File(new File(getExternalFilesDir(null), "keystores"), name);
                     try {
-                        dmz.engine.KeystoreCreator.create(out, pass, alias, "ZLI APK Patcher");
+                        dmz.engine.KeystoreCreator.create(out, pass, alias, "DMZ APK Patcher");
                         saveKeystoreCreds(out, pass, alias);
                         useKeystore(out, pass, alias);
                         dlg.dismiss();
@@ -735,13 +735,13 @@ public class MainActivity extends AppCompatActivity {
         if (edKsPass != null && pass != null) edKsPass.setText(pass);
         if (this.edAlias != null && alias != null) this.edAlias.setText(alias);
         if (lblKs != null) lblKs.setText(ks.getName() + " · prêt");
-        getSharedPreferences("zli", MODE_PRIVATE).edit()
+        getSharedPreferences("dmz", MODE_PRIVATE).edit()
                 .putString("lastKs", ks.getAbsolutePath()).apply();
     }
 
     private void saveKeystoreCreds(File ks, String pass, String alias) {
         // 1) SharedPreferences (in-app, survives reopens)
-        android.content.SharedPreferences sp = getSharedPreferences("zli-keystores", MODE_PRIVATE);
+        android.content.SharedPreferences sp = getSharedPreferences("dmz-keystores", MODE_PRIVATE);
         sp.edit()
                 .putString(ks.getAbsolutePath() + ".pass", pass)
                 .putString(ks.getAbsolutePath() + ".alias", alias == null ? "" : alias)
@@ -755,14 +755,14 @@ public class MainActivity extends AppCompatActivity {
             p.setProperty("keyPassword", pass);
             p.setProperty("created", new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new java.util.Date()));
             try (java.io.FileOutputStream fo = new java.io.FileOutputStream(props)) {
-                p.store(fo, "ZLI APK Patcher — keystore credentials (keep private)");
+                p.store(fo, "DMZ APK Patcher — keystore credentials (keep private)");
             }
         } catch (Exception ignored) {}
     }
 
     private String[] loadKeystoreCreds(File ks) {
         if (ks == null) return null;
-        android.content.SharedPreferences sp = getSharedPreferences("zli-keystores", MODE_PRIVATE);
+        android.content.SharedPreferences sp = getSharedPreferences("dmz-keystores", MODE_PRIVATE);
         String pass = sp.getString(ks.getAbsolutePath() + ".pass", null);
         String alias = sp.getString(ks.getAbsolutePath() + ".alias", null);
         if (pass != null) return new String[]{pass, alias == null ? "" : alias};
@@ -779,7 +779,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void restoreLastKeystore() {
-        String last = getSharedPreferences("zli", MODE_PRIVATE).getString("lastKs", null);
+        String last = getSharedPreferences("dmz", MODE_PRIVATE).getString("lastKs", null);
         if (last == null) return;
         File ks = new File(last);
         if (!ks.isFile()) return;
@@ -790,7 +790,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showKeystoreCreatedDialog(File out, String pass, String alias) {
         String msg = "File:\n" + out.getAbsolutePath()
-                + "\n\nAlias: " + (alias == null || alias.isEmpty() ? "zli" : alias)
+                + "\n\nAlias: " + (alias == null || alias.isEmpty() ? "dmz" : alias)
                 + "\nPassword:\n" + pass
                 + "\n\nThe password is also saved in "
                 + out.getName() + ".properties next to the keystore. Keep this file private.";
@@ -831,7 +831,7 @@ public class MainActivity extends AppCompatActivity {
                 if (edAlias != null) edAlias.setText(creds[1]);
                 lblKs.setText(name + " · creds restaurés");
             }
-            getSharedPreferences("zli", MODE_PRIVATE).edit().putString("lastKs", saved.getAbsolutePath()).apply();
+            getSharedPreferences("dmz", MODE_PRIVATE).edit().putString("lastKs", saved.getAbsolutePath()).apply();
         } catch (Exception ignored) {}
     }
 
