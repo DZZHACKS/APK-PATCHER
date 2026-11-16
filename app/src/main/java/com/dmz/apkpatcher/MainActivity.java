@@ -60,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean menuIsSo;
     private boolean menuAuto = true;
     private android.graphics.drawable.Drawable detectedIcon;
+    private ApkManifest.Info cachedManifest;
+    private volatile int loadSeq = 0;
+    private View srcLoadingOverlay, srcContinueBtn;
+    private TextView srcLoadingText;
 
     private TextInputEditText edKsPass, edAlias, edActivity;
     private TextView lblKs;
@@ -207,11 +211,40 @@ public class MainActivity extends AppCompatActivity {
         fileDetected = s.findViewById(R.id.fileDetected);
         fileChipType = s.findViewById(R.id.fileChipType);
 
-        s.findViewById(R.id.srcContinue).setOnClickListener(v -> {
+        srcLoadingOverlay = s.findViewById(R.id.srcLoadingOverlay);
+        srcLoadingText = s.findViewById(R.id.srcLoadingText);
+        srcContinueBtn = s.findViewById(R.id.srcContinue);
+        srcContinueBtn.setOnClickListener(v -> {
             if (fApk == null) return;
             if (menuAuto) tryAutoPick();
             show(Screen.MENU);
         });
+    }
+
+    private void srcLoadingShow(final String msg) {
+        main.post(() -> {
+            if (srcLoadingText != null) srcLoadingText.setText(msg);
+            if (srcLoadingOverlay != null) srcLoadingOverlay.setVisibility(View.VISIBLE);
+            if (srcContinueBtn != null) { srcContinueBtn.setEnabled(false); srcContinueBtn.setAlpha(0.4f); }
+        });
+    }
+
+    private void srcLoadingProgress(final String msg) {
+        main.post(() -> { if (srcLoadingText != null) srcLoadingText.setText(msg); });
+    }
+
+    private void srcLoadingHide() {
+        main.post(() -> {
+            if (srcLoadingOverlay != null) srcLoadingOverlay.setVisibility(View.GONE);
+            if (srcContinueBtn != null) { srcContinueBtn.setEnabled(true); srcContinueBtn.setAlpha(1f); }
+        });
+    }
+
+    private ApkManifest.Info manifest() {
+        if (cachedManifest != null) return cachedManifest;
+        if (fApk == null) return new ApkManifest.Info();
+        cachedManifest = ApkManifest.read(fApk, new File(getCacheDir(), "manifest-work"));
+        return cachedManifest;
     }
 
     private void switchTab(boolean installed) {
@@ -227,12 +260,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void onInstalledPicked(InstalledAppsAdapter.Entry e) {
         if (e.apkFile == null) return;
+        final int mySeq = ++loadSeq;
+        // Reset state + capture icon BEFORE kicking off the background work. This also means
+        // that if the user picks a second game before the first copy finishes, the stale thread's
+        // completion will see mySeq != loadSeq and discard its results (preventing the "wrong
+        // icon" bug where a slow first pick overwrote the current pick's state).
         detectedIcon = e.icon;
-        // Always route through a copy in cacheDir: /data/app/*/base.apk isn't reliably readable
-        // by other apps on modern Android (File.isFile() can return false even when the APK
-        // exists), so we snapshot every APK via the PackageManager into our own storage first.
+        detectedGame = null;
+        fApk = null;
+        cachedManifest = null;
+        fileDetails.setVisibility(View.GONE);
+        srcLoadingShow("Loading " + e.label + "…");
+        appendLog("INFO", "Pick " + e.pkg + " (" + (e.splitSourceDirs.length + 1) + " APKs)");
+
         new Thread(() -> {
             try {
+                srcLoadingProgress("Copying base APK…");
                 File localBase = copyInstalledApk(e.pkg, e.apkFile, "base.apk");
                 boolean hasSplits = e.splitSourceDirs != null && e.splitSourceDirs.length > 0;
                 File toPatch;
@@ -242,10 +285,11 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     java.util.ArrayList<File> splitsLocal = new java.util.ArrayList<>();
                     int droppedAbi = 0;
-                    for (String p : e.splitSourceDirs) {
-                        File src = new File(p);
+                    int total = e.splitSourceDirs.length;
+                    for (int i = 0; i < total; i++) {
+                        if (mySeq != loadSeq) return; // user cancelled / picked another
+                        File src = new File(e.splitSourceDirs[i]);
                         String sn = src.getName().toLowerCase();
-                        // 64-bit only: skip armeabi-v7a / x86 / x86_64 / mips arch splits.
                         if (sn.contains("armeabi_v7a") || sn.contains("armeabi-v7a")
                                 || sn.contains("x86_64")
                                 || sn.matches(".*(^|[_\\-\\.])x86([_\\-\\.].*|$)")
@@ -253,22 +297,35 @@ public class MainActivity extends AppCompatActivity {
                             droppedAbi++;
                             continue;
                         }
+                        srcLoadingProgress("Copying split " + (i + 1) + "/" + total + "…");
                         File dst = copyInstalledApk(e.pkg, src, src.getName());
                         if (dst != null) splitsLocal.add(dst);
                     }
+                    srcLoadingProgress("Bundling .apks container…");
                     toPatch = packSplitApks(e.pkg, localBase, splitsLocal);
                     appendLog("INFO", "Bundled " + (1 + splitsLocal.size()) + " APKs from " + e.pkg
                             + (droppedAbi > 0 ? " (dropped " + droppedAbi + " non-arm64 split(s))" : "")
                             + " into " + toPatch.getName());
                 }
+                if (mySeq != loadSeq) return;
+                srcLoadingProgress("Reading manifest…");
+                File work = new File(getCacheDir(), "manifest-work");
+                Files2.deleteTree(work);
+                final ApkManifest.Info info = ApkManifest.read(toPatch, work);
                 final File finalTarget = toPatch;
                 final long sz = finalTarget.length();
+                final String labelFinal = e.label + (hasSplits ? " (APKS)" : "");
                 main.post(() -> {
+                    if (mySeq != loadSeq) return; // stale completion — discard
                     fApk = finalTarget;
-                    afterApkLoaded(e.label + (hasSplits ? " (APKS)" : ""), sz);
+                    cachedManifest = info;
+                    afterApkLoaded(labelFinal, sz, info);
+                    srcLoadingHide();
                 });
             } catch (Exception ex) {
                 main.post(() -> {
+                    if (mySeq != loadSeq) return;
+                    srcLoadingHide();
                     android.widget.Toast.makeText(this, "Load install failed: " + ex.getMessage(),
                             android.widget.Toast.LENGTH_LONG).show();
                     appendLog("ERROR", "Load installed APK: " + ex.getMessage());
@@ -327,16 +384,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onApkPicked(Uri uri) {
-        try {
-            String name = queryName(uri, "target.apk");
-            File dest = new File(getCacheDir(), "input-" + safeName(name));
-            copyUriTo(uri, dest);
-            fApk = dest;
-            detectedIcon = readApkIcon(dest);
-            afterApkLoaded(name, dest.length());
-        } catch (Exception e) {
-            // show error inline on next screen's log — skip for now
-        }
+        final int mySeq = ++loadSeq;
+        detectedIcon = null;
+        detectedGame = null;
+        fApk = null;
+        cachedManifest = null;
+        fileDetails.setVisibility(View.GONE);
+        srcLoadingShow("Loading file…");
+        new Thread(() -> {
+            try {
+                String name = queryName(uri, "target.apk");
+                File dest = new File(getCacheDir(), "input-" + safeName(name));
+                srcLoadingProgress("Copying file…");
+                copyUriTo(uri, dest);
+                if (mySeq != loadSeq) return;
+                srcLoadingProgress("Reading manifest…");
+                File work = new File(getCacheDir(), "manifest-work");
+                Files2.deleteTree(work);
+                final ApkManifest.Info info = ApkManifest.read(dest, work);
+                final android.graphics.drawable.Drawable icon = readApkIcon(dest);
+                final long sz = dest.length();
+                final String nameFinal = name;
+                main.post(() -> {
+                    if (mySeq != loadSeq) return;
+                    fApk = dest;
+                    cachedManifest = info;
+                    detectedIcon = icon;
+                    afterApkLoaded(nameFinal, sz, info);
+                    srcLoadingHide();
+                });
+            } catch (Exception ex) {
+                main.post(() -> {
+                    if (mySeq != loadSeq) return;
+                    srcLoadingHide();
+                    android.widget.Toast.makeText(this, "Load failed: " + ex.getMessage(),
+                            android.widget.Toast.LENGTH_LONG).show();
+                    appendLog("ERROR", "Load APK: " + ex.getMessage());
+                });
+            }
+        }, "load-file").start();
     }
 
     private android.graphics.drawable.Drawable readApkIcon(File apk) {
@@ -350,10 +436,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) { return null; }
     }
 
-    private void afterApkLoaded(String name, long size) {
-        File work = new File(getCacheDir(), "manifest-work");
-        Files2.deleteTree(work);
-        ApkManifest.Info info = ApkManifest.read(fApk, work);
+    private void afterApkLoaded(String name, long size, ApkManifest.Info info) {
+        if (info == null) info = new ApkManifest.Info();
+        cachedManifest = info;
         if (info.launcherActivity != null && edActivity != null) edActivity.setText(info.launcherActivity);
         detectedGame = registry.match(info.pkg);
 
@@ -481,8 +566,7 @@ public class MainActivity extends AppCompatActivity {
         }
         renderFeatures();
         renderVariantChips();
-        ApkManifest.Info info = fApk == null ? new ApkManifest.Info()
-                : ApkManifest.read(fApk, new File(getCacheDir(), "manifest-work"));
+        ApkManifest.Info info = manifest();
         menuGamePkg.setText(info.pkg == null ? "—" : info.pkg);
 
         // found / file details — hide implementation (.so filename) from the UI
@@ -680,7 +764,7 @@ public class MainActivity extends AppCompatActivity {
         restoreLastKeystore();
 
         if (fApk != null) {
-            ApkManifest.Info info = ApkManifest.read(fApk, new File(getCacheDir(), "manifest-work"));
+            ApkManifest.Info info = manifest();
             if (info.launcherActivity != null && (edActivity.getText() == null || edActivity.getText().length() == 0))
                 edActivity.setText(info.launcherActivity);
         }
@@ -889,8 +973,7 @@ public class MainActivity extends AppCompatActivity {
             patchGameCode.setText("OK");
             patchGameName.setText("Patching");
         }
-        ApkManifest.Info info = fApk == null ? new ApkManifest.Info()
-                : ApkManifest.read(fApk, new File(getCacheDir(), "manifest-work"));
+        ApkManifest.Info info = manifest();
         patchGamePkg.setText(info.pkg == null ? "—" : info.pkg);
         if (detectedIcon != null) {
             patchGameLogo.setImageDrawable(detectedIcon);
@@ -1449,7 +1532,7 @@ public class MainActivity extends AppCompatActivity {
             checkBadge.setVisibility(View.GONE);
         } else {
             name.setText(detectedGame.name);
-            ApkManifest.Info info = ApkManifest.read(fApk, new File(getCacheDir(), "manifest-work"));
+            ApkManifest.Info info = manifest();
             pkg.setText(info.pkg == null ? "" : info.pkg);
             code.setText(detectedGame.code);
             if (detectedIcon != null) {

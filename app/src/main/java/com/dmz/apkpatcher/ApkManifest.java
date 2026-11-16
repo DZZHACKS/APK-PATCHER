@@ -90,8 +90,26 @@ final class ApkManifest {
     }
 
     private static File extractBaseApk(File container, File workDir) throws Exception {
-        File base = null, biggest = null;
+        // Fast path: scan for "base.apk" only, stop as soon as we extract it. Avoids extracting
+        // every split APK (which can be hundreds of MB) just to read the base manifest.
+        File base = null;
         ZipInputStream in = new ZipInputStream(new FileInputStream(container));
+        try {
+            ZipEntry e;
+            while ((e = in.getNextEntry()) != null) {
+                if (e.isDirectory() || !e.getName().toLowerCase().endsWith(".apk")) continue;
+                String name = new File(e.getName()).getName();
+                if (!"base.apk".equalsIgnoreCase(name)) continue;
+                File out = new File(workDir, name);
+                OutputStream o = new FileOutputStream(out);
+                try { Files2.copy(in, o); } finally { o.close(); }
+                base = out;
+                break;
+            }
+        } finally { in.close(); }
+        if (base != null) return base;
+        // Fallback: no base.apk entry — extract the first .apk we find.
+        in = new ZipInputStream(new FileInputStream(container));
         try {
             ZipEntry e;
             while ((e = in.getNextEntry()) != null) {
@@ -99,11 +117,10 @@ final class ApkManifest {
                 File out = new File(workDir, new File(e.getName()).getName());
                 OutputStream o = new FileOutputStream(out);
                 try { Files2.copy(in, o); } finally { o.close(); }
-                if ("base.apk".equalsIgnoreCase(out.getName())) base = out;
-                if (biggest == null || out.length() > biggest.length()) biggest = out;
+                return out;
             }
         } finally { in.close(); }
-        return base != null ? base : biggest;
+        return null;
     }
 
     private static String extOf(String name) {
