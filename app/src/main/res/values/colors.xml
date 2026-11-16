@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#0A0B10</color>
+    <color name="bg_soft">#10131C</color>
+    <color name="surface">#141824</color>
+    <color name="surface_card">#1A1F2E</color>
+    <color name="surface_high">#20263A</color>
+    <color name="surface_elev">#232A40</color>
+    <color name="outline">#2A3249</color>
+    <color name="outline_subtle">#1F2537</color>
+
+    <color name="accent">#4DE0FF</color>
+    <color name="accent_glow">#804DE0FF</color>
+    <color name="accent_soft">#0C2A33</color>
+    <color name="accent_dim">#2EA3BD</color>
+    <color name="launcher_bg">#05070E</color>
+
+    <color name="success">#1DC97E</color>
+    <color name="success_glow">#801DC97E</color>
+    <color name="success_soft">#0D2A1C</color>
+    <color name="warn">#FFC947</color>
+    <color name="danger">#FF5A5F</color>
+
+    <color name="text">#F1F4FA</color>
+    <color name="text_mid">#AEB6C6</color>
+    <color name="muted">#6E7993</color>
+    <color name="muted_dim">#4A5165</color>
+</resources>

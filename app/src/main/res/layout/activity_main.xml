@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <include android:id="@+id/screenHome"     layout="@layout/screen_home" />
+    <include android:id="@+id/screenSource"   layout="@layout/screen_source" />
+    <include android:id="@+id/screenMenu"     layout="@layout/screen_menu" />
+    <include android:id="@+id/screenSigning"  layout="@layout/screen_signing" />
+    <include android:id="@+id/screenPatching" layout="@layout/screen_patching" />
+    <include android:id="@+id/screenSuccess"  layout="@layout/screen_success" />
+    <include android:id="@+id/screenInstalled" layout="@layout/screen_installed" />
+    <include android:id="@+id/screenSettings" layout="@layout/screen_settings" />
+    <include android:id="@+id/screenLanguage" layout="@layout/screen_language" />
+    <include android:id="@+id/screenLogs"     layout="@layout/screen_logs" />
+    <include android:id="@+id/screenAbout"    layout="@layout/screen_about" />
+</FrameLayout>

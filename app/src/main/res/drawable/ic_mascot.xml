@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="168dp" android:height="168dp"
+    android:viewportWidth="200" android:viewportHeight="200">
+    <!-- outer glow halo -->
+    <path android:fillColor="#33FF3B5C"
+        android:pathData="M100,16 C146,16 184,54 184,100 C184,146 146,184 100,184 C54,184 16,146 16,100 C16,54 54,16 100,16 Z" />
+    <!-- robot head -->
+    <path android:fillColor="#141824" android:strokeColor="#FF3B5C" android:strokeWidth="2"
+        android:pathData="M60,72 L140,72 Q152,72 152,84 L152,128 Q152,140 140,140 L60,140 Q48,140 48,128 L48,84 Q48,72 60,72 Z" />
+    <!-- eyes -->
+    <path android:fillColor="#FF3B5C" android:pathData="M78,102 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+    <path android:fillColor="#FF3B5C" android:pathData="M122,102 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+    <path android:fillColor="#FFFFFF" android:pathData="M82,98 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+    <path android:fillColor="#FFFFFF" android:pathData="M126,98 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+    <!-- antenna -->
+    <path android:strokeColor="#FF3B5C" android:strokeWidth="3" android:pathData="M100,72 L100,54" />
+    <path android:fillColor="#FF3B5C" android:pathData="M100,50 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0" />
+    <!-- wrench -->
+    <path android:fillColor="#B8C1D1"
+        android:pathData="M148,146 L168,166 L176,158 L156,138 Z" />
+    <path android:fillColor="#B8C1D1"
+        android:pathData="M146,132 Q160,132 160,146 Q160,150 156,154 L148,146 Q144,142 146,132 Z" />
+</vector>

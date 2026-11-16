@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="22dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="18dp">
+        <ImageView android:id="@+id/srcBack" android:layout_width="40dp" android:layout_height="40dp"
+            android:padding="8dp" android:src="@drawable/ic_back"
+            android:background="?android:selectableItemBackgroundBorderless" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/select_source" android:textColor="@color/text"
+            android:textSize="20sp" android:fontFamily="sans-serif-medium" android:paddingStart="6dp" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:layout_marginBottom="18dp">
+        <LinearLayout android:id="@+id/tabInstalled" android:layout_width="0dp" android:layout_height="64dp"
+            android:layout_weight="1" android:orientation="horizontal" android:gravity="center"
+            android:background="@drawable/pill_accent" android:layout_marginEnd="8dp"
+            android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/tab_installed" android:textColor="#FFFFFF"
+                android:textSize="14sp" android:fontFamily="sans-serif-medium" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/tabFile" android:layout_width="0dp" android:layout_height="64dp"
+            android:layout_weight="1" android:orientation="horizontal" android:gravity="center"
+            android:background="@drawable/pill_surface" android:layout_marginStart="8dp"
+            android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/tab_file" android:textColor="@color/text"
+                android:textSize="14sp" android:fontFamily="sans-serif-medium" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- INSTALLED PANEL -->
+    <LinearLayout android:id="@+id/panelInstalled" android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:orientation="vertical">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/installed_apps" android:textColor="@color/muted"
+            android:textSize="12sp" android:letterSpacing="0.08" android:textAllCaps="true"
+            android:paddingBottom="10dp" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/listApps"
+            android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+            android:clipToPadding="false" android:paddingBottom="12dp" />
+    </LinearLayout>
+
+    <!-- FILE PANEL -->
+    <LinearLayout android:id="@+id/panelFile" android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:orientation="vertical" android:visibility="gone">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:paddingBottom="14dp">
+            <TextView android:id="@+id/chipApk" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp" android:paddingVertical="8dp"
+                android:text="APK" android:textColor="@color/text" android:textSize="13sp"
+                android:background="@drawable/chip_bg" android:layout_marginEnd="8dp"
+                android:clickable="true" android:focusable="true" />
+            <TextView android:id="@+id/chipApks" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp" android:paddingVertical="8dp"
+                android:text="APKS" android:textColor="#FFFFFF" android:textSize="13sp"
+                android:background="@drawable/chip_bg" android:layout_marginEnd="8dp"
+                android:clickable="true" android:focusable="true" />
+            <TextView android:id="@+id/chipXapk" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp" android:paddingVertical="8dp"
+                android:text="XAPK" android:textColor="@color/text" android:textSize="13sp"
+                android:background="@drawable/chip_bg"
+                android:clickable="true" android:focusable="true" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/dropZone" android:layout_width="match_parent" android:layout_height="220dp"
+            android:orientation="vertical" android:gravity="center"
+            android:background="@drawable/dash_drop"
+            android:clickable="true" android:focusable="true">
+            <ImageView android:layout_width="56dp" android:layout_height="56dp" android:src="@drawable/ic_cloud_up" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/drop_file" android:textColor="@color/text"
+                android:textSize="15sp" android:fontFamily="sans-serif-medium" android:paddingTop="10dp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/or_tap_browse" android:textColor="@color/muted"
+                android:textSize="12sp" android:paddingTop="2dp" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/fileDetails" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:background="@drawable/card_bg" android:padding="14dp"
+            android:layout_marginTop="14dp" android:visibility="gone">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical">
+                <FrameLayout android:layout_width="44dp" android:layout_height="44dp"
+                    android:background="@drawable/badge_bg">
+                    <TextView android:id="@+id/fileChipType" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_gravity="center" android:text="APKS"
+                        android:textColor="#FFFFFF" android:textSize="11sp" android:fontFamily="sans-serif-black" />
+                </FrameLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:orientation="vertical" android:paddingStart="12dp">
+                    <TextView android:id="@+id/fileName" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="—" android:textColor="@color/text" android:textSize="14sp"
+                        android:fontFamily="sans-serif-medium" android:maxLines="1" android:ellipsize="end" />
+                    <TextView android:id="@+id/fileSize" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="—" android:textColor="@color/muted" android:textSize="11sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <TextView android:id="@+id/filePkg" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="—" android:textColor="@color/muted" android:fontFamily="monospace"
+                android:textSize="11sp" android:paddingTop="8dp" />
+            <TextView android:id="@+id/fileDetected" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="@string/unknown_game" android:textColor="@color/success"
+                android:textSize="13sp" android:paddingTop="4dp" android:fontFamily="sans-serif-medium" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView android:id="@+id/srcContinue"
+        android:layout_width="match_parent" android:layout_height="56dp"
+        android:text="@string/continue_label" android:gravity="center"
+        android:textColor="#FFFFFF" android:textSize="15sp" android:fontFamily="sans-serif-medium"
+        android:background="@drawable/pill_accent" android:layout_marginVertical="14dp"
+        android:clickable="true" android:focusable="true" />
+</LinearLayout>

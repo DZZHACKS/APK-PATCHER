@@ -1,0 +1,41 @@
+# === Android Studio / Gradle ===
+*.iml
+.idea/
+.gradle/
+local.properties
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.hprof
+
+# === Signing / secrets ===
+*.jks
+*.keystore
+*.p12
+*.pfx
+keystore.properties
+signing.properties
+*.env
+.env.*
+
+# === Build outputs ===
+/app/release/
+/app/debug/
+*.apk
+*.aab
+*.aar
+!app/src/main/assets/menus/*.apk
+!app/src/main/assets/menus/*.so
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Editors ===
+*.swp
+*.swo
+*~
+.vscode/
+*.log

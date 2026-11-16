@@ -1,0 +1,15 @@
+// Pure-Java patch engine: same code runs inside the Android app or from a desktop test harness.
+plugins { id 'java-library' }
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    api 'com.android.tools.build:apksig:8.7.3'
+    api 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+    api 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
+    api 'com.android.tools.smali:smali-dexlib2:3.0.3'
+    api 'com.google.guava:guava:32.1.3-android'
+}

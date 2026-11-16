@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="22dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="18dp">
+        <ImageView android:id="@+id/menuBack" android:layout_width="40dp" android:layout_height="40dp"
+            android:padding="8dp" android:src="@drawable/ic_back"
+            android:background="?android:selectableItemBackgroundBorderless" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/choose_menu" android:textColor="@color/text"
+            android:textSize="20sp" android:fontFamily="sans-serif-medium" android:paddingStart="6dp" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:paddingBottom="14dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:background="@drawable/card_bg" android:padding="16dp" android:layout_marginBottom="18dp">
+        <FrameLayout android:id="@+id/menuGameBadge" android:layout_width="56dp" android:layout_height="56dp"
+            android:background="@drawable/badge_bg">
+            <TextView android:id="@+id/menuGameCode" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="center" android:textColor="#FFFFFF" android:text="OP"
+                android:textSize="16sp" android:fontFamily="sans-serif-black" />
+            <ImageView android:id="@+id/menuGameLogo"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:scaleType="centerCrop" android:visibility="gone" />
+        </FrameLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:orientation="vertical" android:paddingStart="12dp">
+            <TextView android:id="@+id/menuGameName" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="—" android:textColor="@color/text" android:textSize="15sp"
+                android:fontFamily="sans-serif-medium" />
+            <TextView android:id="@+id/menuGamePkg" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="—" android:textColor="@color/muted" android:textSize="11sp" android:fontFamily="monospace" />
+        </LinearLayout>
+        <TextView android:id="@+id/menuChangeBtn"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/change" android:textColor="@color/accent" android:textSize="12sp"
+            android:paddingHorizontal="14dp" android:paddingVertical="8dp"
+            android:background="@drawable/pill_surface" android:clickable="true" android:focusable="true" />
+    </LinearLayout>
+
+    <!-- MOD MENU FEATURES (populated at runtime) -->
+    <LinearLayout android:id="@+id/menuFeaturesCard"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/card_bg" android:padding="16dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/ic_crown" />
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:orientation="vertical" android:paddingStart="10dp">
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/menu_detected" android:textColor="@color/text"
+                        android:textSize="15sp" android:fontFamily="sans-serif-medium" />
+                    <ImageView android:layout_width="18dp" android:layout_height="18dp"
+                        android:src="@drawable/ic_check" android:layout_marginStart="6dp" />
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/menu_feature_intro"
+                    android:textColor="@color/muted" android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/menuFeaturesGrid"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:paddingTop="12dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:background="@drawable/card_bg_hi" android:padding="10dp" android:layout_marginTop="10dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="i" android:textColor="#8AB4FF" android:textSize="12sp"
+                android:fontFamily="sans-serif-black" android:background="@drawable/radio_off"
+                android:gravity="center" android:minWidth="20dp" android:minHeight="20dp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/menu_feature_note"
+                android:textColor="@color/muted" android:textSize="11sp" android:paddingStart="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/menuFoundCard"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:background="@drawable/card_bg" android:padding="12dp"
+        android:layout_marginBottom="10dp">
+        <ImageView android:layout_width="26dp" android:layout_height="26dp" android:src="@drawable/ic_check" />
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:orientation="vertical" android:paddingStart="10dp">
+            <TextView android:id="@+id/menuFoundTitle" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/found_menu" android:textColor="@color/success" android:textSize="13sp"
+                android:fontFamily="sans-serif-medium" />
+            <TextView android:id="@+id/menuFoundSub" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="—" android:textColor="@color/muted" android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/menuFileRow"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:background="@drawable/card_bg_hi" android:padding="12dp"
+        android:visibility="gone">
+        <FrameLayout android:layout_width="44dp" android:layout_height="44dp"
+            android:background="@drawable/badge_bg">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="center" android:text=".SO"
+                android:textColor="#FFFFFF" android:textSize="11sp" android:fontFamily="sans-serif-black" />
+        </FrameLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:orientation="vertical" android:paddingStart="12dp">
+            <TextView android:id="@+id/menuFileName" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="—" android:textColor="@color/text" android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
+            <TextView android:id="@+id/menuFileSize" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="—" android:textColor="@color/muted" android:textSize="11sp" />
+        </LinearLayout>
+        <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_check" />
+    </LinearLayout>
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView android:id="@+id/menuContinue"
+        android:layout_width="match_parent" android:layout_height="56dp"
+        android:text="@string/continue_label" android:gravity="center"
+        android:textColor="#FFFFFF" android:textSize="15sp" android:fontFamily="sans-serif-medium"
+        android:background="@drawable/pill_accent" android:layout_marginVertical="14dp"
+        android:clickable="true" android:focusable="true" />
+</LinearLayout>

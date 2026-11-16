@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:fillViewport="true">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:paddingHorizontal="20dp" android:paddingTop="22dp" android:paddingBottom="28dp">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="18dp">
+            <ImageView android:id="@+id/signBack" android:layout_width="40dp" android:layout_height="40dp"
+                android:padding="8dp" android:src="@drawable/ic_back"
+                android:background="?android:selectableItemBackgroundBorderless" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/signing_title" android:textColor="@color/text"
+                android:textSize="20sp" android:fontFamily="sans-serif-medium" android:paddingStart="6dp" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:gravity="center"
+            android:background="@drawable/card_bg" android:padding="26dp" android:layout_marginBottom="18dp">
+            <FrameLayout android:layout_width="78dp" android:layout_height="78dp">
+                <View android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:background="@drawable/success_glow" />
+                <View android:layout_width="56dp" android:layout_height="56dp" android:layout_gravity="center"
+                    android:background="@drawable/success_circle" />
+                <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_gravity="center"
+                    android:src="@drawable/ic_check" />
+            </FrameLayout>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/ready" android:textColor="@color/text"
+                android:textSize="19sp" android:fontFamily="sans-serif-medium" android:paddingTop="12dp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/ready_sub" android:textColor="@color/muted" android:textSize="12sp" android:paddingTop="2dp" />
+        </LinearLayout>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/keystore" android:textColor="@color/muted"
+            android:textSize="11sp" android:letterSpacing="0.08" android:textAllCaps="true" android:paddingBottom="6dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:background="@drawable/card_bg_hi" android:padding="12dp" android:layout_marginBottom="14dp">
+            <TextView android:id="@+id/lblKs" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="@string/none"
+                android:textColor="@color/text" android:textSize="14sp" android:maxLines="1" android:ellipsize="end" />
+            <TextView android:id="@+id/btnKs"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/change" android:textColor="@color/accent" android:textSize="12sp"
+                android:paddingHorizontal="14dp" android:paddingVertical="8dp"
+                android:background="@drawable/pill_surface" android:clickable="true" android:focusable="true" />
+        </LinearLayout>
+        <TextView android:id="@+id/btnKsCreate"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/create_keystore"
+            android:textColor="@color/accent" android:textSize="12sp"
+            android:paddingVertical="10dp" android:gravity="center"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true" android:focusable="true"
+            android:layout_marginBottom="14dp" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/password" android:textColor="@color/muted"
+            android:textSize="11sp" android:letterSpacing="0.08" android:textAllCaps="true" android:paddingBottom="6dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            app:endIconMode="password_toggle" android:layout_marginBottom="12dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edKsPass"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:inputType="textPassword" android:importantForAutofill="no" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/alias_opt" android:textColor="@color/muted"
+            android:textSize="11sp" android:letterSpacing="0.08" android:textAllCaps="true" android:paddingBottom="6dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edAlias"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/launcher_activity" android:textColor="@color/muted"
+            android:textSize="11sp" android:letterSpacing="0.08" android:textAllCaps="true" android:paddingBottom="6dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edActivity"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout android:id="@+id/btnPatchNow"
+            android:layout_width="match_parent" android:layout_height="60dp"
+            android:orientation="horizontal" android:gravity="center"
+            android:background="@drawable/pill_accent"
+            android:clickable="true" android:focusable="true">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_bolt" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/patch_now" android:textColor="#FFFFFF" android:textSize="16sp"
+                android:fontFamily="sans-serif-medium" android:paddingStart="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

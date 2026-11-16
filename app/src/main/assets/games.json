@@ -1,0 +1,65 @@
+{
+  "games": [
+    {
+      "code": "LDOE",
+      "name": "Last Day on Earth: Survival",
+      "packages": ["zombie.survival.craft.z"],
+      "accent": "#8DF27A",
+      "logo": "ldoe",
+      "variants": [
+        {"label": "BlackMods", "apk": "ldoe-blackmods.apk", "bootstrap": "Ldzz/blackmodz/cheat/MainActivity;->Start(Landroid/content/Context;)V"},
+        {"label": "Zuke BR",   "apk": "ldoe-zukebr.apk",    "bootstrap": "LDzz/zukebr/cheat/MainActivity;->Start(Landroid/content/Context;)V"}
+      ],
+      "features": [
+        {"name": "God Mode",         "desc": "No damage taken"},
+        {"name": "One-Hit Kill",     "desc": "Kill mobs instantly"},
+        {"name": "Max Resources",    "desc": "Unlimited materials"},
+        {"name": "Unlimited Stamina","desc": "Never get tired"},
+        {"name": "Free Craft",       "desc": "Craft without cost"},
+        {"name": "Teleport",         "desc": "Move anywhere on map"},
+        {"name": "No Hunger / Thirst","desc": "Needs stay full"},
+        {"name": "Unlock All",       "desc": "All items unlocked"}
+      ]
+    },
+    {
+      "code": "DA",
+      "name": "Days After",
+      "packages": ["games.alternativa.projectv.test"],
+      "accent": "#F59E0B",
+      "logo": "da",
+      "variants": [
+        {"label": "D-M-Z", "sos": ["libD-M-Z.store.so"]}
+      ],
+      "features": [
+        {"name": "Aimbot",       "desc": "Auto-target enemies"},
+        {"name": "Wallhack",     "desc": "See through walls"},
+        {"name": "No Recoil",    "desc": "Perfectly steady aim"},
+        {"name": "No Spread",    "desc": "Bullets fly straight"},
+        {"name": "Speed Hack",   "desc": "Move faster"},
+        {"name": "Infinite Ammo","desc": "Never reload"},
+        {"name": "No Damage",    "desc": "Take zero damage"},
+        {"name": "Radar / ESP",  "desc": "See players on HUD"}
+      ]
+    },
+    {
+      "code": "GS",
+      "name": "Grim Soul",
+      "packages": ["fantasy.survival.game.rpg"],
+      "accent": "#A78BFA",
+      "logo": "gs",
+      "variants": [
+        {"label": "D-M-Z", "apk": "grimsoul.apk", "bootstrap": "Lcom/mycompany/application/MainActivity;->Start()V"}
+      ],
+      "features": [
+        {"name": "God Mode",         "desc": "No damage taken"},
+        {"name": "One-Hit Kill",     "desc": "Kill mobs instantly"},
+        {"name": "Max Resources",    "desc": "Unlimited materials"},
+        {"name": "Unlimited Stamina","desc": "Never get tired"},
+        {"name": "Free Craft",       "desc": "Craft without cost"},
+        {"name": "Teleport",         "desc": "Move anywhere on map"},
+        {"name": "No Hunger / Thirst","desc": "Needs stay full"},
+        {"name": "Unlock All",       "desc": "All items unlocked"}
+      ]
+    }
+  ]
+}

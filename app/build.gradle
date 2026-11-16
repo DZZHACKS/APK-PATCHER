@@ -1,0 +1,62 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.dmz.apkpatcher'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.dmz.apkpatcher'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    signingConfigs {
+        release {
+            def ks = System.getenv('ZLI_KEYSTORE')
+            if (ks) {
+                storeFile file(ks)
+                storePassword System.getenv('ZLI_KEYSTORE_PASS')
+                keyAlias System.getenv('ZLI_KEY_ALIAS') ?: 'zli'
+                keyPassword System.getenv('ZLI_KEY_PASS') ?: System.getenv('ZLI_KEYSTORE_PASS')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig System.getenv('ZLI_KEYSTORE') ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packaging {
+        resources {
+            excludes += ['META-INF/*.SF', 'META-INF/*.RSA', 'META-INF/*.DSA',
+                         'META-INF/LICENSE*', 'META-INF/NOTICE*', 'about.html',
+                         'about_files/**', 'META-INF/versions/**',
+                         'META-INF/DEPENDENCIES', 'META-INF/INDEX.LIST']
+        }
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    implementation project(':engine')
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.activity:activity:1.9.3'
+    implementation 'androidx.documentfile:documentfile:1.0.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.core:core:1.13.1'
+}
